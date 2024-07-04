@@ -28,13 +28,10 @@ jobs:
         run: |
           terraform init -input=false -backend-config="bucket=${{ secrets.TF_BACKEND_BUCKET }}" -backend-config="prefix=${{ secrets.TF_BACKEND_PREFIX }}"
 
-      - name: Terraform Plan
-        id: plan
+      - name: Terraform Validate
         run: |
-          terraform plan -no-color -out=tfplan
-        continue-on-error: true
+          terraform validate -no-color
 
       - name: Terraform Apply
-        if: success() && steps.plan.outputs.plan
         run: |
-          terraform apply -auto-approve tfplan
+          terraform apply -auto-approve
