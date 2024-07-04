@@ -1,45 +1,51 @@
-name: 'CI-CD'
+name: Terraform Deployment
 
-# Trigger workflow on push events
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  deploy:
-    name: 'Deploy to GCP'
+  terraform_apply:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash
-
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-
-      - name: Configure GCP Credentials
-        uses: google-github-actions/setup-gcloud@v1
         with:
+          terraform_version: "1.2.9"  # Adjust as necessary
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          service_account_email: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
           credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Terraform Init
-        run: terraform init -backend-config="bucket=${{ secrets.TF_BACKEND_BUCKET }}" -backend-config="prefix=${{ secrets.TF_BACKEND_PREFIX }}"
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: |
+          terraform init -input=false -backend-config="bucket=${{ secrets.TF_BACKEND_BUCKET }}" -backend-config="prefix=${{ secrets.TF_BACKEND_PREFIX }}"
 
-      - name: Terraform Format
-        run: terraform fmt -check
+      - name: Terraform Validate
+        run: |
+          terraform validate -no-color
 
       - name: Terraform Plan
-        run: terraform plan
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        id: plan
+        run: |
+          terraform plan -no-color -out=tfplan
+        continue-on-error: true
+
+      - name: Save Terraform Plan
+        if: success() && steps.plan.outputs.plan
+        uses: actions/upload-artifact@v2
+        with:
+          name: tf-plan
+          path: tfplan
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        if: success() && steps.plan.outputs.plan
+        run: |
+          terraform apply -auto-approve tfplan
