@@ -1,0 +1,25 @@
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Ignore any .terraform directories
+**/.terraform/*
+
+# Ignore .terraform directories
+.terraform
+
+# Ignore any file ending in ".tfstate.backup" or beginning with tfplan
+*.tfstate.backup
+tfplan*.backup
+
+# Ignore .terraform subfolder in the current directory
+/terraform.tfstate.d/
+
+# Ignore CLI cache files
+.terraform-cache
+
+# Ignore lock.hcl files
+*lock.hcl
+
+# Ignore JSON files
+*.json

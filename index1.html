@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Innovators Inc. - Public GCS Bucket</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            color: #fff;
+        }
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.5);
+        }
+        header {
+            background-color: rgba(0, 123, 255, 0.8);
+            color: #fff;
+            padding: 20px 0;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            margin: 40px auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        h2 {
+            color: #007bff;
+            font-size: 1.8rem;
+            margin-top: 0;
+        }
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            backdrop-filter: blur(10px);
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        .footer {
+            background-color: rgba(0, 123, 255, 0.8);
+            color: #fff;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+        .footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .contact-info {
+            margin-top: 20px;
+            color: #007bff;
+            font-size: 1.1rem;
+        }
+        .contact-info a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="tech_background.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <header>
+        <nav class="menu">
+            <ul style="display: flex; justify-content: flex-end; list-style: none; margin: 0; padding: 0;">
+                <li style="display: inline-block; margin: 0 10px;"><a href="#">Home</a></li>
+                <li style="display: inline-block; margin: 0 10px;"><a href="#">About Us</a></li>
+                <li style="display: inline-block; margin: 0 10px;"><a href="#">Services</a></li>
+                <li style="display: inline-block; margin: 0 10px;"><a href="#">Contact</a></li>
+              </ul>
+        </nav>
+        <h1 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); color: #fff;">Tech Innovators Inc.</h1>
+      </header>
+      
+
+    <div class="container">
+        <h2>Welcome to Our Public GCS Bucket</h2>
+        <p>Tech Innovators Inc. is excited to present our new public Google Cloud Storage bucket, providing easy access to our static content globally.</p>
+        
+        <div class="info-box">
+            <h3>Project Overview</h3>
+            <p><strong>Objective:</strong> To create a cost-effective, scalable, and publicly accessible storage solution using Google Cloud Bucket Storage.</p>
+
+            <p><strong>Content:</strong> An example index.html file for demonstration.</p>
+        </div>
+
+        <div class="info-box">
+            <h3>Access Information</h3>
+            <p>You can access the content directly via the public URL provided by GCP. For more information, visit our <a href="https://github.com/yourusername/yourrepository">GitHub repository</a> where the Terraform script and index.html file are hosted.</p>
+        </div>
+        
+        <div class="contact-info">
+            <p>For inquiries, please contact us at: <a href="mailto:contact@techinnovators.com">contact@techinnovators.com</a></p>
+        </div>
+        <img src="https://cdn.dribbble.com/users/57127/screenshots/1391502/media/03a3442f972dbda34099c4e546f5ec9d.gif" alt="Tech Innovators Logo">
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 Tech Innovators Inc. | <a href="https://www.techinnovators.com">Visit Our Website</a></p>
+    </footer>
+    <script>
+        // Example JavaScript to fetch and insert dynamic data
+        document.getElementById('bucket-name').textContent = 'public-bucket-123456'; // Replace with dynamic value from Terraform output
+    </script>
+</body>
+</html>
