@@ -1,27 +1,40 @@
-name: Terraform Apply
+name: Terraform Deployment
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  terraform:
+  terraform_apply:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: "1.2.9"  # Adjust as necessary
 
-      - name: Terraform init
-        run: terraform init -input=false
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          service_account_email: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-      - name: Terraform plan
-        run: terraform plan -no-color -out=tfplan
+      - name: Terraform Init
+        run: |
+          terraform init -input=false -backend-config="bucket=${{ secrets.TF_BACKEND_BUCKET }}" -backend-config="prefix=${{ secrets.TF_BACKEND_PREFIX }}"
 
-      - name: Terraform apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve tfplan
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -no-color -out=tfplan
+        continue-on-error: true
+
+      - name: Terraform Apply
+        if: success() && steps.plan.outputs.plan
+        run: |
+          terraform apply -auto-approve tfplan
